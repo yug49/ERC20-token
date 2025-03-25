@@ -29,7 +29,7 @@ contract ManualToken {
     event BurnSuccessfull(address indexed from, uint256 value);
     event MintSuccessfull(address indexed to, uint256 value);
 
-    constructor (uint256 _value){
+    constructor(uint256 _value) {
         mint(msg.sender, _value);
     }
 
@@ -54,8 +54,8 @@ contract ManualToken {
     }
 
     function transfer(address _to, uint256 _value) public {
-        if(msg.sender == address(0)) revert ManualToken__InvalidSender();
-        if(_to == address(0)) revert ManualToken__InvalidReceiver();
+        if (msg.sender == address(0)) revert ManualToken__InvalidSender();
+        if (_to == address(0)) revert ManualToken__InvalidReceiver();
         if (s_balances[msg.sender] < _value) {
             revert ManualToken__InsufficientBalance();
         }
@@ -67,12 +67,7 @@ contract ManualToken {
         }
     }
 
-    function approve(
-        address _from,
-        address _sender,
-        uint256 _value,
-        address _to
-    ) private returns (bool) {
+    function approve(address _from, address _sender, uint256 _value, address _to) private returns (bool) {
         if (s_allowances[_from][_sender] < _value) {
             return false;
         } else {
@@ -82,9 +77,9 @@ contract ManualToken {
     }
 
     function transferFrom(address _owner, address _to, uint256 _value) public {
-        if(msg.sender == address(0)) revert ManualToken__InvalidSender();
-        if(_to == address(0)) revert ManualToken__InvalidReceiver();
-        if(_owner == address(0)) revert ManualToken__InvalidOwner();
+        if (msg.sender == address(0)) revert ManualToken__InvalidSender();
+        if (_to == address(0)) revert ManualToken__InvalidReceiver();
+        if (_owner == address(0)) revert ManualToken__InvalidOwner();
         if (!approve(_owner, msg.sender, _value, _to)) {
             revert ManualToken__SendersAllowanceDenied();
         }
@@ -100,28 +95,28 @@ contract ManualToken {
     }
 
     function allowance(address _to, uint256 _ammountAllowed) public {
-        if(msg.sender == address(0)) revert ManualToken__InvalidSender();
-        if(_to == address(0)) revert ManualToken__InvalidReceiver();
-        
+        if (msg.sender == address(0)) revert ManualToken__InvalidSender();
+        if (_to == address(0)) revert ManualToken__InvalidReceiver();
+
         s_allowances[msg.sender][_to] = 0;
         s_allowances[msg.sender][_to] = _ammountAllowed;
     }
 
     function mint(address _to, uint256 _value) internal {
-        if(_to == address(0)) revert ManualToken__InvalidReceiver();
-        if(msg.sender == address(0)) revert ManualToken__InvalidSender();
+        if (_to == address(0)) revert ManualToken__InvalidReceiver();
+        if (msg.sender == address(0)) revert ManualToken__InvalidSender();
         update(address(0), _to, _value);
     }
 
     function burn(address _from, uint256 _value) internal {
-        if(_from == address(0)) revert ManualToken__InvalidSender();
-        if(msg.sender == address(0)) revert ManualToken__InvalidReceiver();
+        if (_from == address(0)) revert ManualToken__InvalidSender();
+        if (msg.sender == address(0)) revert ManualToken__InvalidReceiver();
         update(_from, address(0), _value);
     }
 
-    function update(address _from , address _to, uint256 _value) private {
-        if(_to == address(0)) {
-            unchecked{
+    function update(address _from, address _to, uint256 _value) private {
+        if (_to == address(0)) {
+            unchecked {
                 s_totalSupply -= _value;
                 s_balances[_from] -= _value;
             }
@@ -132,7 +127,7 @@ contract ManualToken {
         emit MintSuccessfull(_to, _value);
     }
 
-    function getAllowances(address _owner, address _sender) public view returns(uint256){
+    function getAllowances(address _owner, address _sender) public view returns (uint256) {
         return s_allowances[_owner][_sender];
     }
 }

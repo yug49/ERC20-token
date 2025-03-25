@@ -64,13 +64,13 @@ contract ManualTokenTest is Test {
         manualToken.transfer(address(0), INITIAL_BALANCE);
     }
 
-    function testTansferRevertsInsufficientBalance() public fundBob{
+    function testTansferRevertsInsufficientBalance() public fundBob {
         vm.prank(bob);
         vm.expectRevert(ManualToken.ManualToken__InsufficientBalance.selector);
         manualToken.transfer(alice, 15 ether);
     }
 
-    function testTransferEmitsTransfer() public{
+    function testTransferEmitsTransfer() public {
         vm.prank(msg.sender);
         vm.expectEmit(true, true, false, true, address(manualToken));
         emit Transfer(msg.sender, alice, INITIAL_BALANCE);
@@ -78,11 +78,10 @@ contract ManualTokenTest is Test {
         manualToken.transfer(alice, INITIAL_BALANCE);
     }
 
-
-    function testAllowanceMap() public{
+    function testAllowanceMap() public {
         vm.prank(msg.sender);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
-        assert(manualToken.getAllowances(msg.sender, bob) == AMOUNT_ALLOWED); 
+        assert(manualToken.getAllowances(msg.sender, bob) == AMOUNT_ALLOWED);
     }
 
     function testAllowanceRevertInvalidSender() public {
@@ -90,14 +89,14 @@ contract ManualTokenTest is Test {
         vm.expectRevert(ManualToken.ManualToken__InvalidSender.selector);
         manualToken.allowance(bob, INITIAL_BALANCE);
     }
-    
+
     function testAllowanceRevertInvalidReceiver() public {
         vm.prank(msg.sender);
         vm.expectRevert(ManualToken.ManualToken__InvalidReceiver.selector);
         manualToken.allowance(address(0), INITIAL_BALANCE);
     }
 
-    function testTransferFrom() public fundBob{
+    function testTransferFrom() public fundBob {
         vm.prank(msg.sender);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
         vm.prank(bob);
@@ -106,25 +105,24 @@ contract ManualTokenTest is Test {
         assert(manualToken.getBalance(alice) == AMOUNT_ALLOWED - 1 ether);
     }
 
-    function testTransferFromRevertInvalidSender() public fundBob{
+    function testTransferFromRevertInvalidSender() public fundBob {
         vm.prank(address(0));
         vm.expectRevert(ManualToken.ManualToken__InvalidSender.selector);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
     }
 
-    function testTransferFromRevertInvalidReceiver() public fundBob{
+    function testTransferFromRevertInvalidReceiver() public fundBob {
         vm.prank(msg.sender);
         vm.expectRevert(ManualToken.ManualToken__InvalidReceiver.selector);
         manualToken.allowance(address(0), AMOUNT_ALLOWED);
     }
 
-    function testTransferFromRevertDenied() public fundBob{
+    function testTransferFromRevertDenied() public fundBob {
         vm.prank(msg.sender);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
         vm.prank(bob);
         vm.expectRevert(ManualToken.ManualToken__SendersAllowanceDenied.selector);
         manualToken.transferFrom(msg.sender, alice, AMOUNT_ALLOWED + 1 ether);
-        
     }
 
     function testTransferFromRevertsInsufficientBalance() public {
@@ -135,16 +133,16 @@ contract ManualTokenTest is Test {
         manualToken.transferFrom(bob, alice, AMOUNT_ALLOWED - 1 ether);
     }
 
-    function testTransferFromEmitsTransfer() public fundBob{
+    function testTransferFromEmitsTransfer() public fundBob {
         vm.prank(msg.sender);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
         vm.prank(bob);
-        vm.expectEmit(true,true,false, true, address(manualToken));
+        vm.expectEmit(true, true, false, true, address(manualToken));
         emit Transfer(msg.sender, alice, AMOUNT_ALLOWED - 1 ether);
         manualToken.transferFrom(msg.sender, alice, AMOUNT_ALLOWED - 1 ether);
     }
 
-    function testTransferApproved() public fundBob{
+    function testTransferApproved() public fundBob {
         vm.prank(msg.sender);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
         vm.prank(bob);
@@ -153,7 +151,7 @@ contract ManualTokenTest is Test {
         manualToken.transferFrom(msg.sender, alice, AMOUNT_ALLOWED - 1 ether);
     }
 
-    function testAllowanceUpdatesAllowances() public fundBob{
+    function testAllowanceUpdatesAllowances() public fundBob {
         vm.prank(msg.sender);
         manualToken.allowance(bob, AMOUNT_ALLOWED);
         vm.prank(bob);
@@ -161,6 +159,4 @@ contract ManualTokenTest is Test {
 
         assert(manualToken.getAllowances(msg.sender, bob) == 1 ether);
     }
-
-    
 }

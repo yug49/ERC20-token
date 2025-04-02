@@ -16,7 +16,7 @@ It is a smart contract project written in [Solidity](https://docs.soliditylang.o
  
 ## Installation
 
-- Install Lottery-SmartContract-Foundry
+- Install ERC20-token
 ```bash
     git clone https://github.com/yug49/ERC20-token
     cd ERC20-token

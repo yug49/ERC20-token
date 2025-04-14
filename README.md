@@ -1,5 +1,5 @@
 
-# Smart-Contract-Lottery
+# ERC20-Token
 It is a smart contract project written in [Solidity](https://docs.soliditylang.org/en/latest/) using [Foundry](https://book.getfoundry.sh/).
 - It a smart contract I developed leveraging Foundry.
 - It is a ERC-20 token I build named 'Manual Token- MT', I don't know why I named it this in the first place and then was too lazy to change it.
